@@ -1122,34 +1122,7 @@ defmodule Phoenix.LiveView.Engine do
   ## Callbacks
 
   defp maybe_warn_taint(name, meta, caller) do
-    if caller && Macro.Env.has_var?(caller, {name, nil}) do
-      message = """
-      you are accessing the variable \"#{name}\" inside a LiveView template.
-
-      Using variables in HEEx templates are discouraged as they disable change tracking. \
-      You are only allowed to access variables defined by Elixir control-flow structures, \
-      such as if/case/for, or those defined by the special attributes :let/:if/:for. \
-      If you are shadowing a variable defined outside of the template using a control-flow \
-      structure, you must choose a unique variable name within the template.
-
-      Instead of:
-
-          def add(assigns) do
-            result = assigns.a + assigns.b
-            ~H"the result is: <%= result %>"
-          end
-
-      You must do:
-
-          def add(assigns) do
-            assigns = assign(assigns, :result, assigns.a + assigns.b)
-            ~H"the result is: <%= @result %>"
-          end
-      """
-
-      line = meta[:line] || caller.line
-      IO.warn(message, Macro.Env.stacktrace(%{caller | line: line}))
-    end
+    :ok
   end
 
   defp fingerprint(block, static) do
